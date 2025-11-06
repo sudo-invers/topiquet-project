@@ -1,5 +1,7 @@
 package com.invers.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.invers.model.Product;
 import com.invers.model.Users;
 import com.invers.service.UsersService;
 
@@ -26,15 +27,15 @@ public class UsersController {
 	@PostMapping("/register")
 	public ResponseEntity<Users> register(Users user) {
 		try {
-			return new ResponseEntity<>(service.register(user),HttpStatus.OK);
+			return new ResponseEntity<Users>(service.register(user),HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Users>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	
 	@GetMapping("/users")
-	public ResponseEntity<Users> getAllUsers() {
-		return new ResponseEntity<Users>(service.getAllUsers(),HttpStatus.OK);
+	public ResponseEntity<List<Users>> getAllUsers() {
+		return new ResponseEntity<List<Users>>(service.getAllUsers(),HttpStatus.OK);
 	}
 	
 	@GetMapping("/users/{id}")
@@ -49,8 +50,8 @@ public class UsersController {
 			}
 	}
 	
-	@DeleteMapping("/user/{id}")
-	public ResponseEntity<String> DeleteUser(@PathVariable Long id){
+	@DeleteMapping("/users/{id}")
+	public ResponseEntity<String> DeleteUserById(@PathVariable Long id){
 		Users user = service.getUserById(id);
 		if (user != null) {
 			service.deleteUserById(id);

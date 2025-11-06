@@ -1,5 +1,7 @@
 package com.invers.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -31,18 +33,17 @@ public class UsersService {
 		}
 	}
 	
-	public Users getAllUsers() {
-		return (Users) repo.findAll();
+	public List<Users> getAllUsers() {
+		return repo.findAll();
 	}
 	
 	public void deleteUserById(Long id) {
-		
-		
-		
-		if (repo.existsById(id) == true) {
-			repo.deleteById(id);
-		}
-		throw new NullPointerException("User '" + id + "' don't exist.");
+		repo.deleteById(id);
+	}
+	
+	public Users updateUser() {
+		//TODO
+		return null;
 	}
 
 }

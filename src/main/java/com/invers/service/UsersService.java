@@ -34,5 +34,15 @@ public class UsersService {
 	public Users getAllUsers() {
 		return (Users) repo.findAll();
 	}
+	
+	public void deleteUserById(Long id) {
+		
+		
+		
+		if (repo.existsById(id) == true) {
+			repo.deleteById(id);
+		}
+		throw new NullPointerException("User '" + id + "' don't exist.");
+	}
 
 }

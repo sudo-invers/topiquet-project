@@ -10,13 +10,10 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.invers.model.Users;
 import com.invers.service.MyUsersDetailsService;
 
 @Configuration
@@ -24,20 +21,11 @@ import com.invers.service.MyUsersDetailsService;
 public class SecurityConfig {
 
 	private final MyUsersDetailsService userDetailsService;
-	private final Users user;
 
-	SecurityConfig(MyUsersDetailsService userDetailsService, Users user) {
+	SecurityConfig(MyUsersDetailsService userDetailsService) {
 		this.userDetailsService = userDetailsService;
-		this.user = user;
 	}
 
-	@Bean
-	UserDetailsService userDetailsService(String username) {
-		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-		manager.createUser(userDetailsService.loadUserByUsername(username));
-		return manager;
-
-	}
 	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -55,8 +43,7 @@ public class SecurityConfig {
 	@Bean
 	AuthenticationProvider authenticationProvider() {
 		
-		String username = user.getName();		
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService(username));
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 		provider.setPasswordEncoder(MyPasswordEncoder());
 		return provider;
 	}
